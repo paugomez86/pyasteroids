@@ -1,6 +1,6 @@
 import pygame
 from circleshape import CircleShape
-from constants import PLAYER_RADIUS, LINE_WIDTH, PLAYER_TURN_SPEED, PLAYER_SPEED
+from constants import PLAYER_RADIUS, LINE_WIDTH, PLAYER_TURN_SPEED, PLAYER_SPEED, SCREEN_HEIGHT, SCREEN_WIDTH
 
 class Player(CircleShape):
     def __init__(self, x, y):
@@ -29,7 +29,17 @@ class Player(CircleShape):
             self.rotate(dt * -1)
         if keys[pygame.K_d]:
             self.rotate(dt)
-            
+        
+        # Added: When player ship reaches the edge of the screen, it pops up in the opposite edge   
+        if self.position[0] <= 0:
+            self.position = (SCREEN_WIDTH - 1, self.position[1])
+        if self.position[0] >= SCREEN_WIDTH:
+            self.position = (1, self.position[1])
+        if self.position[1] <= 0:
+            self.position = (self.position[0], SCREEN_HEIGHT - 1)
+        if self.position[1] >= SCREEN_HEIGHT:
+            self.position = (self.position[0], 1)
+        
     def move(self, dt):
         unit_vector = pygame.Vector2(0, 1)
         rotated_vector = unit_vector.rotate(self.rotation)

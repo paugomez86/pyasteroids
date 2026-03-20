@@ -2,6 +2,8 @@ import pygame
 from constants import *
 from logger import log_state
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 
 def main():
     print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
@@ -20,11 +22,18 @@ def main():
     # Defining pygame groups 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+    
     # Adding classes to pygame groups
     Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable)
     
     # Initializing player
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    
+    # Initializing asteroid field. The object itself will spawn multiple asteroid objects
+    asteroidfield = AsteroidField()
 
     while True:
         log_state()
